@@ -1,0 +1,28 @@
+<div class="step-text">
+<p></p>
+<p>Rewrite the following switch statement as a switch expression using the code template below. Feel free to assign <code class="language-java">numLetters</code> to whatever you wish, but do not alter the other code. </p>
+<p>Please ignore the MagicNumberCheck code style issue here.</p>
+<pre><code class="language-java">private enum DaysOfTheWeek {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY}
+
+switch (day) {
+        case MONDAY:
+        case FRIDAY:
+        case SUNDAY:
+            numLetters = 6;
+            break;
+        case TUESDAY:
+            numLetters = 7;
+            break;
+        case THURSDAY:
+        case SATURDAY:
+            numLetters = 8;
+            break;
+        case WEDNESDAY:
+            numLetters = 9;
+            break;
+        default:
+            throw new IllegalStateException("Invalid day: " + day);
+    }
+
+</code></pre><br><b>Sample Input:</b><br><pre><code class="language-no-highlight">MONDAY</code></pre><br><b>Sample Output:</b><br><pre><code class="language-no-highlight">6</code></pre><br><br><br><font color="gray">Memory limit: 256 MB</font><br><font color="gray">Time limit: 5 seconds</font><br><br>
+</div>

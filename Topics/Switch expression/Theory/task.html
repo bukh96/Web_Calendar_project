@@ -1,0 +1,98 @@
+<div class="step-text">
+<p>Java 12 introduced a new feature into the Java language called <a class="theory-lookup not-relevant" href="/learn/step/16036" rel="noopener noreferrer nofollow" target="_blank" title="In Java, a switch expression is a feature introduced in Java 12 that provides a more concise and less error-prone alternative to the traditional switch statement. | Unlike switch statements, which are used to update the value of a predefined variable, switch expressions can be used as an expression. This means that they can be used in contexts where an expression is required, such as in a variable declaration or a method invocation. Switch expressions evaluate a given input against a number of possible cases and return a value based on the first matching case. They use arrow syntax to specify the value to return for each case, and do not require a `break` keyword at the end of each case.">switch expressions</a>, which can be used to simplify many <a class="theory-lookup not-relevant" href="/learn/step/16036" rel="noopener noreferrer nofollow" target="_blank" title="In Java, a switch statement is a control flow statement used to evaluate an expression against multiple cases. | It serves as an alternative to long chains of if-else statements, enhancing code readability. A switch statement consists of the keywords switch, case, and default. The general form of a switch statement involves evaluating a given expression against several case constants. If a match is found, the corresponding code block is executed. However, switch statements can be verbose and prone to errors due to strict requirements for placing statements. Java 12 introduced switch expressions as a more concise and less error-prone alternative.">switch statements</a>. Switch statements are often used to avoid long chains of <code class="java">if</code> and <code class="java">else if</code> statements, generally making your code more readable. That being said, switch statements can be verbose in their own way, and the strict requirements for placing <code class="java">break</code> statements often make them error-prone. Switch expressions were designed to offer a more concise and less error-prone alternative to switch statements. </p>
+<h5 id="switch-statements-vs-switch-expressions">Switch statements vs switch expressions</h5>
+<p>The main difference between a switch expression and a switch statement is that while a switch statement can be used to update the value of a predefined <a class="theory-lookup not-relevant" href="/learn/step/16036" rel="noopener noreferrer nofollow" target="_blank" title="In Java, a variable is a named storage location that is used to store a value of a specific type. | It is declared with a specific data type, which determines the kind of value that can be stored in it. Every variable has a unique name, also known as an identifier, which is used to access its value. Variables can be declared and initialized in a single statement, and their value can be accessed and modified using the name. It's important to note that variables can be changed, meaning you can assign a new value to a variable without having to declare it again.">variable</a>, a switch expression is assigned to a variable. This is possible because a switch expression evaluates to a specific value. Additionally, switch expressions introduced a new <strong>arrow syntax</strong> that condenses the code, makes it more readable, and eliminates the need for <code class="java">break</code> statements. Let's look at an example that demonstrates these differences. </p>
+<p>We begin with an enumeration of various things that are going to be taste-tested. Our switch statement and switch expressions are going to assign a taste rating as an integer from 1 to 10, with 1 being utterly disgusting and 10 being absolutely delicious. First, we'll look at how this would commonly be written as a switch statement: </p>
+<pre><code class="java">private enum ThingsToTaste {PIZZA, BROCCOLI, STEAK, SUGAR, DIRT, MEATBALLS, CHOCOLATE}
+
+int tasteValue = 0;
+ThingsToTaste taste = ThingsToTaste.DIRT;
+
+switch (taste) {
+    case SUGAR:
+    case PIZZA:
+    case CHOCOLATE:
+        tasteValue = 10;
+        break;
+    case MEATBALLS:
+    case STEAK:
+        tasteValue = 7;
+        break;
+    case BROCCOLI:
+        tasteValue = 4;
+        break;
+    case DIRT:
+        tasteValue = 1;
+        break;
+    default:
+        throw new IllegalStateException("Invalid tastable object: " + taste);
+}
+System.out.println(taste + ": " + tasteValue);</code></pre>
+<p>Now let's contrast this with a switch expression. </p>
+<p></p>
+<div class="alert alert-primary">If you have IntelliJ set to use Java 12 or higher, it will convert your switch statement into a switch expression with just one click.</div>
+<p></p>
+<pre><code class="java">int tasteValue = switch (taste) {
+    case SUGAR, PIZZA, CHOCOLATE -&gt; 10;
+    case MEATBALLS, STEAK -&gt; 7;
+    case BROCCOLI -&gt; 4;
+    case DIRT -&gt; 1;
+    default -&gt; throw new IllegalStateException("Invalid tastable object: " + taste);
+};</code></pre>
+<p>As you can see, this is way shorter. Let's go through what changed! First, the <code class="java">tasteValue</code> variable did not have to be initialized before the switch. Instead, the entire switch expression is assigned to be the value of <code class="java">tasteValue</code>. This works because the switch expression will ultimately yield an integer value. The next major difference is that when multiple <code class="java">case</code> statements yield the same value, they can all be combined into one line. SUGAR, PIZZA, and CHOCOLATE all yield 10, so we can simply write <code class="java">case SUGAR, PIZZA, CHOCOLATE -&gt; 10;</code>. </p>
+<p>Next, note that the <code class="java">break</code> statements are gone! The new arrow syntax replaces the need for both the <code class="java">:</code> after <code class="java">case</code> and the <code class="java">break</code> at the end of the case statement. The arrow signals that once the value is reached it is to be assigned to the <code class="java">tasteValue</code> variable and then stop. We no longer have to explicitly state the full assignment expression; just stating the value is enough. The JVM knows to set the integer value to <code class="java">tasteValue</code>. </p>
+<p>We can still have a <code class="java">default</code> case at the end as a fallback option. Also notice that in this example the <code class="java">default</code> case does not return an integer, but instead throws an exception. In fact, there are three possibilities for what can come after the arrow:</p>
+<ul>
+<li>a value of the type the switch expression was declared with</li>
+<li>throw a new exception</li>
+<li>a code block that evaluates to a value of the correct type</li>
+</ul>
+<p>One very important thing that you must keep in mind is that since switch expressions evaluate to a specific value of a specific type, you need to account for all possible cases.</p>
+<p></p>
+<div class="alert alert-warning">If the data type is a primitive or an object, then you must provide a <code class="java">default</code> case. The only exception is using an <code class="java">enum</code> because it is easier to account for every possibility.</div>
+<p></p>
+<h5 id="variations-of-switch-expressions">Variations of switch expressions</h5>
+<p>You can also use colon <code class="java">case</code> statements in a switch expression. The only real difference in the code would be that a regular old <code class="java">switch</code> statement is assigned to a variable and there are no breaks. While this is a valid option, it is not preferable because it does not take advantage of the newer and more compact arrow syntax. It also makes it easier to lose track of whether you are looking at a <code class="java">switch</code> statement or a <code class="java">switch</code> expression because other than the variable assignment at the top and the absence of breaks, there are no visual indicators of that in the code.  </p>
+<p>Java 13 introduced the <code class="java">yield</code> keyword which can be used inside colon <code class="java">case</code> statements to identify the value the <code class="java">case</code> statement yields. It also replaces the <code class="java">break</code> statement and removes the need to explicitly mention the variable the value is assigned to. If you are going to use colons in your <code class="java">case</code> statements, using the new <code class="java">yield</code> keyword is the best option. </p>
+<pre><code class="java">int tasteValue = switch (taste) {                                               
+    case SUGAR:                                                                 
+    case PIZZA:                                                                 
+    case CHOCOLATE:                                                             
+        yield 10;                                                               
+    case MEATBALLS:                                                             
+    case STEAK:                                                                 
+        yield 7;                                                                
+    case BROCCOLI:                                                              
+        yield 4;                                                                                                                                    
+    case DIRT:                                                                  
+        yield 1;                                                                
+    default:                                                                    
+        throw new IllegalStateException("Invalid tastable object: " + taste);   
+};</code></pre>
+<p>The <code class="java">yield</code> keyword cannot be used inside a <code class="java">switch</code> statement. Likewise, <code class="java">break</code> cannot be used in a <code class="java">switch</code> expression. Therefore the use of <code class="java">yield</code> helps ensure that the reader of your code doesn't forget which type of <code class="java">switch</code> they are reading. </p>
+<p>There is also an in-between option that uses the new arrow syntax but puts a <a class="theory-lookup not-relevant" href="/learn/step/16036" rel="noopener noreferrer nofollow" target="_blank" title="In Java, a code block is a group of statements that should be executed together. | Code blocks can be used to define methods, constructors, initializer blocks, and control structures such as loops and if-else statements. The statements within a block are executed sequentially, and any variable declared within the block is only accessible within that block. Code blocks are useful for organizing and controlling the flow of code in a Java program. They are also used to define the scope of variables and methods. In Java 15, text blocks were introduced as a new feature for handling long, multi-line strings in a more readable and visually appealing way.">code block</a> with a <code class="java">yield</code> in it to the right of the arrow. This might seem unnecessarily verbose compared to the first example of the arrow case syntax shown above, but there are situations in which this long way has some advantages. The <code class="java">yield</code> statement must be the last line in the code block, but you can call other functions in the lines before it. A simple example of this would be printing the value about to be yielded to the console right before yielding it, as you can see in the example below. </p>
+<pre><code class="java">tasteValue = switch (taste) {
+    case SUGAR, PIZZA, CHOCOLATE -&gt; {
+        System.out.println(10);
+        yield 10;
+    }
+    case MEATBALLS, STEAK -&gt; {
+        System.out.println(7);
+        yield 7;
+    }
+    case BROCCOLI -&gt; {
+        System.out.println(4);
+        yield 4;
+    }
+    case DIRT -&gt; {
+        System.out.println(1);
+        yield 1;
+    }
+    default -&gt; {
+        throw new IllegalStateException("Invalid tastable object: " + taste);
+    }
+};</code></pre>
+<h5 id="conclusion">Conclusion</h5>
+<p>A switch expression can be used instead of a switch statement to make the code more concise and less error-prone. The entire switch expression is assigned to a variable because it yields a value. Unless you are using an <code class="java">enum</code>  in your switch expression, you must include a <code class="java">default</code> case. You can yield a single value, throw an exception, or use a code block that ultimately evaluates to a single value.</p>
+<p>In this topic we learned a few variations of switch expression syntax. The new arrow syntax allows us to put all of our cases that yield the same result on one line; the arrow replaces the colon and the <code class="java">break</code>. Java 13 introduced the <code class="java">yield</code> keyword, which can be used in switch expressions but not in switch statements. It can be used both with colon or arrow syntax, but it is typically used at the end of a code block to return a value, often after calling other functions earlier in the block. If  <code class="java">yield</code> is used with colon syntax, it replaces the <code class="java">break</code>, same as the arrow does in arrow syntax. An easy way to differentiate between switch expressions and switch statements is that switch expressions cannot have <code class="java">break</code>in them, and switch statements cannot have <code class="java">yield</code> in them. </p>
+</div>

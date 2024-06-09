@@ -1,0 +1,24 @@
+<div class="step-text">
+<p></p>
+<p>Which of the following case statements is invalid?</p>
+<pre><code class="java">int numberOfHamburgersToEat = switch (howHungryAmI) {
+
+    case 1, 2, 3 -&gt; 0;                  // A
+
+    case 4, 5, 6 -&gt; {                   // B
+        yield 1;
+    }
+
+    case 7, 8, 9 -&gt; {                   // C
+        System.out.println(2);
+        yield 2;
+    }
+
+    case 10 -&gt; {                        // D
+        numberOfHamburgersToEat = 3;    
+        break;
+    }
+
+    default -&gt; throw new Exception("The number must be between 1 and 10");
+};</code></pre>
+</div>

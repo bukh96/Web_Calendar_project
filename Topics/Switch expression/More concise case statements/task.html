@@ -1,0 +1,31 @@
+<div class="step-text">
+<p></p>
+<p>Given the following statement:</p>
+<pre><code class="language-java">switch (day) {
+        case MONDAY:
+        case FRIDAY:
+        case SUNDAY:
+            numLetters = 6;
+            break;
+        case TUESDAY:
+            numLetters = 7;
+            break;
+        case THURSDAY:
+        case SATURDAY:
+            numLetters = 8;
+            break;
+        case WEDNESDAY:
+            numLetters = 9;
+            break;
+        default:
+            throw new IllegalStateException("Invalid day: " + day);
+    }</code></pre>
+<p>The statement can be rewritten using switch expression. Complete the switch expression below. Write down only the case statement for MONDAY, FRIDAY, and SUNDAY. It should fit on one line. Use arrow notation.</p>
+<pre><code class="language-java">int numLetters = switch (day) {
+    // case for MONDAY, FRIDAY and SUNDAY
+    // case for TUESDAY
+    // case for THURSDAY and SATURDAY
+    // case for WEDNESDAY
+    default -&gt; throw new IllegalStateException("Invalid day: " + day);
+};</code></pre>
+</div>

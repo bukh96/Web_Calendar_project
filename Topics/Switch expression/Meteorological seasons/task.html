@@ -1,0 +1,22 @@
+<div class="step-text">
+<p></p>
+<p>Rewrite the following switch statement as a switch expression using the code template below. </p>
+<p>Please ignore the <code class="language-java">MagicNumberCheck</code> code style issue here. The default state won't be checked.</p>
+<pre><code class="language-java">enum Seasons { SPRING, SUMMER, AUTUMN, WINTER }
+int temperature = 0;
+switch (season) {
+        case SPRING:
+        case AUTUMN:
+            temperature = 20;
+            break;
+        case SUMMER:
+            temperature = 37;
+            break;
+        case WINTER:
+            temperature = 1;
+            break;
+        default:
+            throw new IllegalStateException("Invalid name of Seasons.");
+    }
+</code></pre><br><b>Sample Input:</b><br><pre><code class="language-no-highlight">AUTUMN<br></code></pre><br><b>Sample Output:</b><br><pre><code class="language-no-highlight">20</code></pre><br><br><br><font color="gray">Memory limit: 256 MB</font><br><font color="gray">Time limit: 5 seconds</font><br><br>
+</div>
